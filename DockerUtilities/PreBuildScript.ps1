@@ -48,16 +48,8 @@ try
 	#TBB Copy
 	Copy-Item "$PackageDirectory\$TBBBin\bin\*.dll" -Destination "$DynamoExtern\LibG_$ASMBranch\"
 
-
-	#Docker configuration
-	docker pull artifactory.dev.adskengineer.net/docker-local-v2/dynamo/buildtools2017sdk81
-
-	docker run -m 8GB -d -t --mount type=bind,source=C:\Jenkins\workspace\Dynamo\Dynamo,target=c:\WorkspaceDynamo --name build-test artifactory.dev.adskengineer.net/docker-local-v2/dynamo/buildtools2017sdk81
 }
 catch
 {
-	docker system prune -f	
-	Invoke-Item "$env:WORKSPACE\DockerUtilities\RestartDockerDesktop.ps1"
-	Write-Host $error[0]
-	throw $LASTEXITCODE
+	Write-Host "$env:WORKSPACE"
 }

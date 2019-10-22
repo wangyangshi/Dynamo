@@ -1,2 +1,2 @@
 @echo "Build solution for release configuration..."
-msbuild /verbosity:quiet "build.xml"
+msbuild /verbosity:quiet ".\src\build.xml"

@@ -20,6 +20,7 @@ build:
 code_analysis:
   sonarqube:
    useCommonSonar: true
+   scanOnAnyBranch: true
    msbuildCommands:
       - "./src/buildDyn.cmd"
 

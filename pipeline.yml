@@ -14,13 +14,8 @@ nuget_config:
     - "autodesk3p"
 
 build:
-  scripts:
+  before_scripts:
     - "powershell.exe -ExecutionPolicy ByPass -File .\\DockerUtilities\\PreBuildScript.ps1"
-
-code_analysis:
-  sonarqube:
-   useCommonSonar: true
-   scanOnAnyBranch: true
-   msbuildCommands:
-      - "buildDyn.cmd"
+  scripts:
+    - "buildDyn.cmd"
 

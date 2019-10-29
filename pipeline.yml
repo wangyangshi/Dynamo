@@ -1,6 +1,6 @@
 version: 0.1.1
 env:
-  - JENKINS_NODE_WIN: "Dynamo_Win_003"
+  - JENKINS_NODE_WIN: "Dynamo_Win_Perf"
   
 check_changelog_updated_on_pr: false
 pipeline_os: "Windows"
@@ -14,8 +14,13 @@ nuget_config:
     - "autodesk3p"
 
 build:
-  before_scripts:
-    - "powershell.exe -ExecutionPolicy ByPass -File .\\DockerUtilities\\PreBuildScript.ps1"
   scripts:
-    - "buildDyn.cmd"
+    - "powershell.exe -ExecutionPolicy ByPass -File .\\DockerUtilities\\PreBuildScript.ps1"
+
+code_analysis:
+  sonarqube:
+   useCommonSonar: false
+   scanOnAnyBranch: true
+   msbuildCommands:
+      - "./src/buildDyn.cmd"
 

@@ -19,7 +19,7 @@ build:
 
 code_analysis:
   sonarqube:
-   useCommonSonar: false
+   useCommonSonar: true
    scanOnAnyBranch: true
    msbuildCommands:
       - "msbuild .\\src\\build.xml"

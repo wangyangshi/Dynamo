@@ -22,5 +22,5 @@ code_analysis:
    useCommonSonar: false
    scanOnAnyBranch: true
    msbuildCommands:
-      - "./src/buildDyn.cmd"
+      - "msbuild .\src\build.xml"
 

@@ -22,5 +22,5 @@ code_analysis:
    useCommonSonar: false
    scanOnAnyBranch: true
    msbuildCommands:
-      - "msbuild .\src\build.xml"
+      - "msbuild .\\src\\build.xml"
 

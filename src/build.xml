@@ -1,7 +1,7 @@
 <Project
     xmlns="http://schemas.microsoft.com/developer/msbuild/2003"
     ToolsVersion="4.0"
-    DefaultTargets="Build">
+    DefaultTargets="Test">
 <PropertyGroup>
     <Solution>Dynamo.All.sln</Solution>
  </PropertyGroup>
@@ -12,12 +12,20 @@
     </ProjectToBuild>
 </ItemGroup>
 
+<ItemGroup>
+  <TestAssembly Include="$(MSBuildProjectDirectory)\..\bin\AnyCPU\Debug\DynamoUtilitiesTests.dll" />
+</ItemGroup>
+
 <Target Name="Build" DependsOnTargets="RestorePackages">
     <MSBuild Projects="@(ProjectToBuild)" Targets="Rebuild"/>
 </Target>
 
 <Target Name="RestorePackages">
     <Exec Command="$(MSBuildProjectDirectory)\..\tools\Nuget\NuGet.exe restore $(Solution)"/>
-  </Target>
+</Target>
+
+<Target Name="Test" DependsOnTargets="Build">
+    <Exec Command="nunit3-console.exe @(TestAssembly)"/>
+</Target>
 
 </Project>

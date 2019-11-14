@@ -13,7 +13,7 @@
 </ItemGroup>
 
 <ItemGroup>
-  <TestAssembly Include="$(MSBuildProjectDirectory)\..\bin\AnyCPU\Debug\DynamoUtilitiesTests.dll" />
+  <TestAssembly Include="$(MSBuildProjectDirectory)\..\bin\AnyCPU\Release\DynamoUtilitiesTests.dll" />
 </ItemGroup>
 
 <Target Name="Build" DependsOnTargets="RestorePackages">

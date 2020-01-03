@@ -1,8 +1,12 @@
-﻿using Dynamo.Extensions;
+﻿using System;
+using System.Linq;
+using System.Windows.Controls;
+using Dynamo.Extensions;
 using Dynamo.Graph.Workspaces;
+using Dynamo.Logging;
+using Dynamo.PackageManager;
 using Dynamo.WorkspaceDependency.Properties;
 using Dynamo.Wpf.Extensions;
-using System.Windows.Controls;
 
 namespace Dynamo.WorkspaceDependency
 {
@@ -11,8 +15,19 @@ namespace Dynamo.WorkspaceDependency
     /// which tracks graph dependencies (currently only packages) on the Dynamo right panel.
     /// It reacts to workspace modified/ cleared events to refresh.
     /// </summary>
-    public class WorkspaceDependencyViewExtension : IViewExtension
+    public class WorkspaceDependencyViewExtension : IViewExtension, ILogSource
     {
+        internal MenuItem workspaceReferencesMenuItem;
+        private const String extensionName = "Workspace References";
+
+        internal WorkspaceDependencyView DependencyView
+        {
+            get;
+            set;
+        }
+
+        internal PackageManagerExtension pmExtension;
+
         /// <summary>
         /// Extension Name
         /// </summary>
@@ -20,7 +35,7 @@ namespace Dynamo.WorkspaceDependency
         {
             get
             {
-                return "Workspace Dependency ViewExtension";
+                return extensionName;
             }
         }
 
@@ -35,55 +50,79 @@ namespace Dynamo.WorkspaceDependency
             }
         }
 
-        private WorkspaceDependencyView DependencyView
-        {
-            get;
-            set;
-        }
-
-        private ReadyParams ReadyParams;
-
         /// <summary>
         /// Dispose function after extension is closed
         /// </summary>
         public void Dispose()
         {
-
+            DependencyView.OnExtensionTabClosed -= OnCloseExtension;
         }
 
-       
+        [Obsolete("This method is not implemented and will be removed.")]
         public void Ready(ReadyParams readyParams)
         {
-            ReadyParams = readyParams;
+
         }
 
         public void Shutdown()
         {
-            ReadyParams.CurrentWorkspaceChanged -= DependencyView.OnWorkspaceChanged;
-            ReadyParams.CurrentWorkspaceCleared -= DependencyView.OnWorkspaceCleared;
+            DependencyView.Dispose();
             this.Dispose();
         }
 
         public void Startup(ViewStartupParams viewLoadedParams)
         {
-
+            pmExtension = viewLoadedParams.ExtensionManager.Extensions.OfType<PackageManagerExtension>().FirstOrDefault();
         }
 
-        private MenuItem packageDependencyMenuItem;
+        public event Action<ILogMessage> MessageLogged;
+
+        internal void OnMessageLogged(ILogMessage msg)
+        {
+            this.MessageLogged?.Invoke(msg);
+        }
+
+        internal void OnCloseExtension(String extensionTabName)
+        {
+            if (extensionTabName.Equals(extensionName))
+            {
+                this.workspaceReferencesMenuItem.IsChecked = false;
+            }  
+        }
 
         public void Loaded(ViewLoadedParams viewLoadedParams)
         {
             DependencyView = new WorkspaceDependencyView(this, viewLoadedParams);
 
-            // Adding a button in view menu to refresh and show manually
-            packageDependencyMenuItem = new MenuItem { Header = Resources.MenuItemString };
-            packageDependencyMenuItem.Click += (sender, args) =>
+            // when a package is loaded update the DependencyView 
+            // as we may have installed a missing package.
+
+            pmExtension.PackageLoader.PackgeLoaded += (package) =>
             {
-                // Refresh dependency data
                 DependencyView.DependencyRegen(viewLoadedParams.CurrentWorkspaceModel as WorkspaceModel);
-                viewLoadedParams.AddToExtensionsSideBar(this, DependencyView);
             };
-            viewLoadedParams.AddMenuItem(MenuBarType.View, packageDependencyMenuItem);
+
+            DependencyView.OnExtensionTabClosed += OnCloseExtension;
+
+            // Adding a button in view menu to refresh and show manually
+            workspaceReferencesMenuItem = new MenuItem { Header = Resources.MenuItemString, IsCheckable = true, IsChecked = false };
+            workspaceReferencesMenuItem.Click += (sender, args) =>
+            {
+                if (workspaceReferencesMenuItem.IsChecked)
+                {
+                    // Refresh dependency data
+                    DependencyView.DependencyRegen(viewLoadedParams.CurrentWorkspaceModel as WorkspaceModel);
+                    viewLoadedParams.AddToExtensionsSideBar(this, DependencyView);
+                    workspaceReferencesMenuItem.IsChecked = true;
+                }
+                else
+                {
+                    viewLoadedParams.CloseExtensioninInSideBar(this);
+                    workspaceReferencesMenuItem.IsChecked = false;
+                }
+
+            };
+            viewLoadedParams.AddMenuItem(MenuBarType.View, workspaceReferencesMenuItem);
         }
     }
 }

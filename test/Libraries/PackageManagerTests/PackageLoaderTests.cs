@@ -24,13 +24,6 @@ namespace Dynamo.PackageManager.Tests
             base.GetLibrariesToPreload(libraries);
         }
 
-        protected override void GetLibrariesToPreload(List<string> libraries)
-        {
-            libraries.Add("DesignScriptBuiltin.dll");
-            libraries.Add("DSCoreNodes.dll");
-            base.GetLibrariesToPreload(libraries);
-        }
-
         [Test]
         public void ScanPackageDirectoryReturnsPackageForValidDirectory()
         {

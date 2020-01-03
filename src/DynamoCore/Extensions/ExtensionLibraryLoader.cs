@@ -55,15 +55,5 @@ namespace Dynamo.Extensions
             var libraryPaths = assemblies.Select(x => x.Location);
             model.LibraryServices.OnLibrariesImported(new LibraryServices.LibraryLoadedEventArgs(libraryPaths));
         }
-
-        /// <summary>
-        /// Loads packages for import into VM and for node search.
-        /// </summary>
-        /// <param name="assemblies"></param>
-        public void LoadPackages(IEnumerable<Assembly> assemblies)
-        {
-            var libraryPaths = assemblies.Select(x => x.Location);
-            model.LibraryServices.OnLibrariesImported(new LibraryServices.LibraryLoadedEventArgs(libraryPaths));
-        }
     }
 }

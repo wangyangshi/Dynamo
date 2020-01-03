@@ -73,8 +73,6 @@ namespace Dynamo.Controls
 
         internal ObservableCollection<TabItem> TabItems { set; get; } = new ObservableCollection<TabItem>();
 
-        internal ObservableCollection<TabItem> TabItems { set; get; } = new ObservableCollection<TabItem>();
-
         // This is to identify whether the PerformShutdownSequenceOnViewModel() method has been
         // called on the view model and the process is not cancelled
         private bool isPSSCalledOnViewModelNoCancel = false;

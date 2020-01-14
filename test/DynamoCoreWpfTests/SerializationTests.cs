@@ -579,14 +579,25 @@ namespace DynamoCoreWpfTests
             //this is done here so we don't need to modify the workspaceComparison classes
             //and it's simple to remove soon.
             var index = 0;
-            foreach(var noteView in ws1.Notes)
+            /*foreach(var noteView in ws1.Notes)
             {
                 var matchingNote = ws2.Notes[index];
                 Assert.IsTrue(noteView.Model.Text == matchingNote.Model.Text);
                 Assert.Less(Math.Abs(noteView.Model.X - matchingNote.Model.X),0001);
                 Assert.Less(Math.Abs(noteView.Model.Y - matchingNote.Model.Y), 0001);
                 index = index + 1;
-            }
+            }*/
+            //MSR
+
+            System.Threading.Tasks.Parallel.For(0, ws1.Notes.Count, (int i) => {
+                var matchingNote = ws2.Notes[index];
+                var noteView = ws1.Notes[index];
+                Assert.IsTrue(noteView.Model.Text == matchingNote.Model.Text);
+                Assert.Less(Math.Abs(noteView.Model.X - matchingNote.Model.X), 0001);
+                Assert.Less(Math.Abs(noteView.Model.Y - matchingNote.Model.Y), 0001);
+                index = index + 1;
+            });
+            //FIN MSR
 
         }
 

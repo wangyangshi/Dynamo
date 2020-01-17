@@ -588,7 +588,6 @@ namespace DynamoCoreWpfTests
                 index = index + 1;
             }*/
             //MSR
-
             System.Threading.Tasks.Parallel.For(0, ws1.Notes.Count, (int i) => {
                 var matchingNote = ws2.Notes[index];
                 var noteView = ws1.Notes[index];
@@ -703,7 +702,20 @@ namespace DynamoCoreWpfTests
             {
                 File.Delete(jsonPath);
             }
-            File.WriteAllText(jsonPath, jo.ToString());
+
+
+            //MSR File.WriteAllText(jsonPath, jo.ToString());
+
+            using (StreamWriter sw = new StreamWriter(jsonPath.ToString(), false, System.Text.Encoding.UTF8, 65536))
+            {
+                sw.WriteLine(jo.ToString());
+            }
+
+
+
+           /* System.Diagnostics.Debug.WriteLine(string.Format("jsonPath :{0}", jsonPath));
+            System.Diagnostics.Debug.WriteLine(string.Format("ConvertCurrentWorkspaceViewToJsonAndSave :{0}", jo.ToString()));*/
+
 
             return jo.ToString();
         }
@@ -743,7 +755,12 @@ namespace DynamoCoreWpfTests
             {
                 File.Delete(jsonPath);
             }
-            File.WriteAllText(jsonPath, json);
+            //MSR File.WriteAllText(jsonPath, json);
+
+            using (StreamWriter sw = new StreamWriter(jsonPath.ToString(), false, System.Text.Encoding.UTF8, 65536))
+            {
+                sw.WriteLine(jo.ToString());                
+            }
 
             return json;
         }

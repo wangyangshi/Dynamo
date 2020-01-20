@@ -657,7 +657,11 @@ namespace DynamoCoreWpfTests
                 File.Delete(jsonPath);
             }
 
-            File.WriteAllText(jsonPath, jo.ToString());
+            //MSR File.WriteAllText(jsonPath, jo.ToString());
+            using (StreamWriter sw = new StreamWriter(jsonPath.ToString(), false, System.Text.Encoding.UTF8, 65536))
+            {
+                sw.WriteLine(jo.ToString());
+            }
 
             // Write DesignScript file
             string dsFileName = Path.GetFileNameWithoutExtension(fileName);

@@ -792,7 +792,7 @@ namespace DynamoCoreWpfTests
 
                 Assert.AreEqual(dataA, dataB);
             }
-
+           
             foreach (var kvp in a.NodeViewDataMap)
             {
                 var valueA = kvp.Value;
@@ -835,7 +835,7 @@ namespace DynamoCoreWpfTests
                 Assert.AreEqual(valueA, valueB);
             }
 
-            foreach (var kvp in a.NodeViewDataMap)
+            /*MSR foreach (var kvp in a.NodeViewDataMap)
             {
                 var valueA = kvp.Value;
                 //convert the old guid to the new guid
@@ -847,7 +847,24 @@ namespace DynamoCoreWpfTests
                 Assert.AreEqual(valueA, valueB,
                 string.Format("Node View Data:{0} value, {1} is not equal to {2}",
                 a.NodeViewDataMap[kvp.Key].Name, valueA, valueB));
-            }
+            }*/
+
+            var index = 0;
+            System.Threading.Tasks.Parallel.For(0, a.NodeViewDataMap.Count, (int i) => {
+                var valueA =  a.NodeViewDataMap.ElementAt(index).Value;
+                //convert the old guid to the new guid
+                var newGuid = GuidUtility.Create(GuidUtility.UrlNamespace, this.modelsGuidToIdMap[a.NodeViewDataMap.ElementAt(index).Key]);
+                var valueB = b.NodeViewDataMap[newGuid];
+                //set the id explicitly since we know it will have changed and should be this id.
+                valueB.ID = valueA.ID.ToString();
+                Assert.AreEqual(valueA, valueB,
+                string.Format("Node View Data:{0} value, {1} is not equal to {2}",
+                a.NodeViewDataMap[a.NodeViewDataMap.ElementAt(index).Key].Name, valueA, valueB));
+                index = index + 1;
+            });
+
+
+
         }
 
         [TestFixtureSetUp]

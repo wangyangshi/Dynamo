@@ -819,7 +819,7 @@ namespace DynamoCoreWpfTests
 
             Assert.AreEqual(a.AnnotationMap.Count, b.AnnotationMap.Count);
 
-            /*MSR foreach (var annotationKVP in a.AnnotationMap)
+            foreach (var annotationKVP in a.AnnotationMap)
             {
                 var valueA = annotationKVP.Value;
                 //convert the old guid to the new guid
@@ -833,9 +833,9 @@ namespace DynamoCoreWpfTests
                 valueB.Nodes = valueA.Nodes;
 
                 Assert.AreEqual(valueA, valueB);
-            }*/
+            }
 
-            var index2 = 0;
+            /*var index2 = 0;
             System.Threading.Tasks.Parallel.For(0, a.AnnotationMap.Count, (int i) => {
                 var valueA = a.AnnotationMap.ElementAt(index2).Value;
                 //convert the old guid to the new guid
@@ -850,12 +850,12 @@ namespace DynamoCoreWpfTests
                 Assert.AreEqual(valueA, valueB);
 
                 index2 = index2 + 1;
-            });
+            });*/
 
 
 
 
-            /*MSR foreach (var kvp in a.NodeViewDataMap)
+            foreach (var kvp in a.NodeViewDataMap)
             {
                 var valueA = kvp.Value;
                 //convert the old guid to the new guid
@@ -867,9 +867,9 @@ namespace DynamoCoreWpfTests
                 Assert.AreEqual(valueA, valueB,
                 string.Format("Node View Data:{0} value, {1} is not equal to {2}",
                 a.NodeViewDataMap[kvp.Key].Name, valueA, valueB));
-            }*/
+            }
 
-            var index = 0;
+            /*var index = 0;
             System.Threading.Tasks.Parallel.For(0, a.NodeViewDataMap.Count, (int i) => {
                 var valueA =  a.NodeViewDataMap.ElementAt(index).Value;
                 //convert the old guid to the new guid
@@ -881,7 +881,7 @@ namespace DynamoCoreWpfTests
                 string.Format("Node View Data:{0} value, {1} is not equal to {2}",
                 a.NodeViewDataMap[a.NodeViewDataMap.ElementAt(index).Key].Name, valueA, valueB));
                 index = index + 1;
-            });
+            });*/
 
 
 

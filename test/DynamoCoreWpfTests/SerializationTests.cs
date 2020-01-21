@@ -819,7 +819,7 @@ namespace DynamoCoreWpfTests
 
             Assert.AreEqual(a.AnnotationMap.Count, b.AnnotationMap.Count);
 
-            foreach (var annotationKVP in a.AnnotationMap)
+            /*MSR foreach (var annotationKVP in a.AnnotationMap)
             {
                 var valueA = annotationKVP.Value;
                 //convert the old guid to the new guid
@@ -833,7 +833,27 @@ namespace DynamoCoreWpfTests
                 valueB.Nodes = valueA.Nodes;
 
                 Assert.AreEqual(valueA, valueB);
-            }
+            }*/
+
+            var index2 = 0;
+            System.Threading.Tasks.Parallel.For(0, a.AnnotationMap.Count, (int i) => {
+                var valueA = a.AnnotationMap.ElementAt(index2).Value;
+                //convert the old guid to the new guid
+                var newGuid = GuidUtility.Create(GuidUtility.UrlNamespace, this.modelsGuidToIdMap[a.AnnotationMap.ElementAt(index2).Key]);
+                var valueB = b.AnnotationMap[newGuid];
+                //set the id explicitly since we know it will have changed and should be this id.
+                valueB.Id = valueA.Id.ToString();
+                Assert.AreEqual(valueB.Nodes.Count(), valueA.Nodes.Count());
+                //ignore this list because all node ids will have changed.
+                valueB.Nodes = valueA.Nodes;
+
+                Assert.AreEqual(valueA, valueB);
+
+                index2 = index2 + 1;
+            });
+
+
+
 
             /*MSR foreach (var kvp in a.NodeViewDataMap)
             {

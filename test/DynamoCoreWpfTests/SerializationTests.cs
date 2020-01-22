@@ -587,15 +587,7 @@ namespace DynamoCoreWpfTests
                 Assert.Less(Math.Abs(noteView.Model.Y - matchingNote.Model.Y), 0001);
                 index = index + 1;
             }
-            //MSR
-            /*System.Threading.Tasks.Parallel.ForEach(ws1.Notes, noteView => {
-                var matchingNote = ws2.Notes[index];
-                Assert.IsTrue(noteView.Model.Text == matchingNote.Model.Text);
-                Assert.Less(Math.Abs(noteView.Model.X - matchingNote.Model.X), 0001);
-                Assert.Less(Math.Abs(noteView.Model.Y - matchingNote.Model.Y), 0001);
-                index = index + 1;
-            });*/
-            //FIN MSR
+            
 
         }
 
@@ -656,11 +648,8 @@ namespace DynamoCoreWpfTests
                 File.Delete(jsonPath);
             }
 
-            //MSR File.WriteAllText(jsonPath, jo.ToString());
-            using (StreamWriter sw = new StreamWriter(jsonPath.ToString(), false, System.Text.Encoding.UTF8, 32768))
-            {
-                sw.WriteLine(jo.ToString());
-            }
+            File.WriteAllText(jsonPath, jo.ToString());
+            
 
             // Write DesignScript file
             string dsFileName = Path.GetFileNameWithoutExtension(fileName);
@@ -707,14 +696,7 @@ namespace DynamoCoreWpfTests
             }
 
 
-            //MSR File.WriteAllText(jsonPath, jo.ToString());
-
-            using (StreamWriter sw = new StreamWriter(jsonPath.ToString(), false, System.Text.Encoding.UTF8, 32768))
-            {
-                sw.WriteLine(jo.ToString());
-            }
-
-
+            File.WriteAllText(jsonPath, jo.ToString());            
 
            /* System.Diagnostics.Debug.WriteLine(string.Format("jsonPath :{0}", jsonPath));
             System.Diagnostics.Debug.WriteLine(string.Format("ConvertCurrentWorkspaceViewToJsonAndSave :{0}", jo.ToString()));*/
@@ -758,7 +740,7 @@ namespace DynamoCoreWpfTests
             {
                 File.Delete(jsonPath);
             }
-            //MSR File.WriteAllText(jsonPath, json);
+            
 
             using (StreamWriter sw = new StreamWriter(jsonPath.ToString(), false, System.Text.Encoding.UTF8, 32768))
             {
@@ -833,27 +815,7 @@ namespace DynamoCoreWpfTests
 
                 Assert.AreEqual(valueA, valueB);
             }
-
-            /*var index2 = 0;
-            System.Threading.Tasks.Parallel.For(0, a.AnnotationMap.Count, (int i) => {
-                var valueA = a.AnnotationMap.ElementAt(index2).Value;
-                //convert the old guid to the new guid
-                var newGuid = GuidUtility.Create(GuidUtility.UrlNamespace, this.modelsGuidToIdMap[a.AnnotationMap.ElementAt(index2).Key]);
-                var valueB = b.AnnotationMap[newGuid];
-                //set the id explicitly since we know it will have changed and should be this id.
-                valueB.Id = valueA.Id.ToString();
-                Assert.AreEqual(valueB.Nodes.Count(), valueA.Nodes.Count());
-                //ignore this list because all node ids will have changed.
-                valueB.Nodes = valueA.Nodes;
-
-                Assert.AreEqual(valueA, valueB);
-
-                index2 = index2 + 1;
-            });*/
-
-
-
-
+           
             foreach (var kvp in a.NodeViewDataMap)
             {
                 var valueA = kvp.Value;
@@ -868,21 +830,7 @@ namespace DynamoCoreWpfTests
                 a.NodeViewDataMap[kvp.Key].Name, valueA, valueB));
             }
 
-            /*var index = 0;
-            System.Threading.Tasks.Parallel.For(0, a.NodeViewDataMap.Count, (int i) => {
-                var valueA =  a.NodeViewDataMap.ElementAt(index).Value;
-                //convert the old guid to the new guid
-                var newGuid = GuidUtility.Create(GuidUtility.UrlNamespace, this.modelsGuidToIdMap[a.NodeViewDataMap.ElementAt(index).Key]);
-                var valueB = b.NodeViewDataMap[newGuid];
-                //set the id explicitly since we know it will have changed and should be this id.
-                valueB.ID = valueA.ID.ToString();
-                Assert.AreEqual(valueA, valueB,
-                string.Format("Node View Data:{0} value, {1} is not equal to {2}",
-                a.NodeViewDataMap[a.NodeViewDataMap.ElementAt(index).Key].Name, valueA, valueB));
-                index = index + 1;
-            });*/
-
-
+            
 
         }
 

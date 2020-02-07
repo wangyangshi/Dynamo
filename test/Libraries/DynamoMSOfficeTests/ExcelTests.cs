@@ -57,7 +57,7 @@ namespace Dynamo.Tests
 
         #region COM
 
-        [Test]
+        [Test, Category("ExcelTest")]
         public void ExcelAppIsClosedOnCleanup()
         {
             Assert.Inconclusive("Has trouble with sequential unit tests.  Does work with single unit test, though.");
@@ -76,7 +76,7 @@ namespace Dynamo.Tests
 
         #region Reading
 
-        [Test]
+        [Test, Category("ExcelTest")]
         public void CanGetLargeWorkbookWithinThresholdTime()
         {
 
@@ -121,7 +121,7 @@ namespace Dynamo.Tests
             Assert.AreEqual(3, mirror.GetElements().ToList().Count);
         }
 
-        [Test]
+        [Test, Category("ExcelTest")]
         public void CanGetWorksheetByNameWithValidInput()
         {
 
@@ -356,7 +356,7 @@ namespace Dynamo.Tests
             AssertPreviewValue(watch.GUID.ToString(), data);
             
         }
-        [Test]
+        [Test, Category("ExcelTest")]
         public void ReadNonExistingFile()
         {
 
@@ -566,7 +566,7 @@ namespace Dynamo.Tests
             
             
         }
-        [Test]
+        [Test, Category("ExcelTest")]
         public void CanCreateNewWorksheetInNewWorkbook()
         {
             string openPath = Path.Combine(TestDirectory, @"core\excel\NewWorkbook_AddWorksheet.dyn");
@@ -1166,7 +1166,7 @@ namespace Dynamo.Tests
         /// for an enhancement which allows "Watch.GenerateWatchViewModelForData" to be called (and 
         /// crash without the fix).
         /// </summary>
-        [Test]
+        [Test, Category("ExcelTest")]
         public void Defect_MAGN_883()
         {
             string testDir = TestDirectory;
